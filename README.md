@@ -27,5 +27,5 @@ The detailed description of the rubric components is given below:
 |      Names           | Student Number|
 | --------------------:|--------------:|
 |  Rafael Timotheus    | 222059710     |
-|                      |               |
+|Katrin Kanzi         |      22309924  |
 
