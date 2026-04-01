@@ -19,7 +19,6 @@ The detailed description of the rubric components is given below:
 3. Functionality- meeting the described functional requirements.
 4. UI & Navigation- aesthetics, leveraging platform features, ease of use.
 5. Presentation- Team presentation, Q&A, Clear separation of tasks done.
-This paper consists of 1 pages (including the front page).
 
 ## Project Name: ValentineDelGarage
 
