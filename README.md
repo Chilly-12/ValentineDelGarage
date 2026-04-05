@@ -29,3 +29,4 @@ The detailed description of the rubric components is given below:
 |  Rafael Timotheus        | 222059710     |
 |  Katrin Kanzi            | 22309924      |
 |  Reinholdt T Ndjendja    | 221097090     |
+|  Ryan Haidula            | 224023888     |
