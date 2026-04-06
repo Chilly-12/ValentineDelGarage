@@ -27,6 +27,6 @@ The detailed description of the rubric components is given below:
 |      Names           | Student Number|
 | --------------------:|--------------:|
 |  Rafael Timotheus        | 222059710     |
-|  Katrin Kanzi            | 22309924      |
+|  Katrin Kanzi            | 223099244     |
 |  Reinholdt T Ndjendja    | 221097090     |
 |  Ryan Haidula            | 224023888     |
