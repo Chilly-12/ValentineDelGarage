@@ -7,6 +7,9 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -49,14 +52,18 @@ class MainActivity : ComponentActivity() {
                 val backStackEntry by navController.currentBackStackEntryAsState()
                 val currentRoute = backStackEntry?.destination?.route
 
-                // Determine start destination based on session state
-                val startDestination = when (sessionState) {
-                    is SessionState.Loading -> null // Will show shimmer instead
-                    is SessionState.SignedIn -> Routes.DASHBOARD
-                    SessionState.SignedOut -> Routes.LOGIN
+                // Latch the start destination exactly once — the first time we
+                // leave Loading.  After that, all navigation is driven by the
+                // LaunchedEffect below; we never recreate the NavHost.
+                var startDestination by rememberSaveable { mutableStateOf<String?>(null) }
+                if (startDestination == null && sessionState !is SessionState.Loading) {
+                    startDestination = when (sessionState) {
+                        is SessionState.SignedIn -> Routes.DASHBOARD
+                        else -> Routes.LOGIN
+                    }
                 }
 
-                // Handle sign out/in navigation after initial load
+                // Handle sign-out / sign-in navigation after the initial load.
                 LaunchedEffect(sessionState, currentRoute) {
                     when (sessionState) {
                         SessionState.Loading -> Unit
@@ -80,7 +87,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                // Show shimmer while loading, otherwise show nav host with correct start
+                // Keep showing the skeleton until we know where to start.
                 if (startDestination == null) {
                     DashboardSkeleton(
                         padding = PaddingValues(
@@ -93,7 +100,7 @@ class MainActivity : ComponentActivity() {
                 } else {
                     NavHost(
                         navController = navController,
-                        startDestination = startDestination,
+                        startDestination = startDestination!!,
                         modifier = Modifier,
                     ) {
                         composable(Routes.LOGIN) {

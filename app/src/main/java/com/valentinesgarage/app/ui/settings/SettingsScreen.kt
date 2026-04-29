@@ -255,7 +255,7 @@ fun SettingsScreen(
                             "to accurately record repairs and check‑ins, and to respect " +
                             "the privacy of customer data.\n\n" +
                             "All activity is logged and may be reviewed by the shop owner.\n\n" +
-                            "Last updated: 1 January 2025",
+                            "Last updated: 27 April 2026",
                     style = MaterialTheme.typography.bodyMedium,
                 )
             },
