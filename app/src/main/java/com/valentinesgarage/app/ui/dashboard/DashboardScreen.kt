@@ -1,5 +1,6 @@
 package com.valentinesgarage.app.ui.dashboard
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +27,6 @@ import androidx.compose.material.icons.filled.LocalShipping
 import androidx.compose.material.icons.filled.Note
 import androidx.compose.material.icons.filled.People
 import androidx.compose.material.icons.filled.PendingActions
-import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Today
 import androidx.compose.material.icons.filled.TrendingUp
 import androidx.compose.material3.Card
@@ -34,7 +34,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -49,10 +48,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.valentinesgarage.app.R
 import com.valentinesgarage.app.domain.model.EmployeeRole
 import com.valentinesgarage.app.domain.model.Truck
 import com.valentinesgarage.app.domain.model.VehicleCondition
@@ -86,24 +88,26 @@ fun DashboardScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text("Hi, ${employee?.name?.substringBefore(' ') ?: ""}")
-                        Text(
-                            "Here's what's happening at the garage",
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Image(
+                            painter = painterResource(id = R.drawable.garage_logo),
+                            contentDescription = "Logo",
+                            modifier = Modifier.size(28.dp)
                         )
-                    }
-                },
-                actions = {
-                    IconButton(onClick = onSettings) {
-                        Icon(Icons.Default.Settings, contentDescription = "Settings")
+                        Spacer(Modifier.size(8.dp))
+                        Column {
+                            Text("Hello, ${employee?.name?.substringBefore(' ') ?: ""}")
+                            Text(
+                                "Here's what's happening at the garage",
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
+                            )
+                        }
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
                     titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    actionIconContentColor = MaterialTheme.colorScheme.onPrimary,
                 ),
             )
         },
@@ -272,6 +276,19 @@ fun DashboardScreen(
                 items(stats.recentCheckIns, key = { it.id }) { truck ->
                     RecentTruckRow(truck = truck, onClick = { onTruckClick(truck.id) })
                 }
+            }
+
+            // "by Aurevarg" at the very bottom
+            item {
+                Text(
+                    text = "by Aurevarg",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 24.dp)
+                )
             }
         }
     }

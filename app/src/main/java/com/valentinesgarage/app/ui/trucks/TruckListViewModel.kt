@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 class TruckListViewModel(
@@ -24,12 +25,17 @@ class TruckListViewModel(
     private val _query = MutableStateFlow("")
     val query: StateFlow<String> = _query.asStateFlow()
 
+    // Loading state that becomes false once the truck list flow emits
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val trucks: StateFlow<List<Truck>> = _query
         .flatMapLatest { q ->
             if (q.isBlank()) truckRepository.observeAll()
             else truckRepository.search(q)
         }
+        .onEach { _isLoading.value = false }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun setQuery(value: String) {

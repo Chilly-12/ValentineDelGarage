@@ -5,7 +5,6 @@ package com.valentinesgarage.app.ui.navigation
  * with the navigation graph.
  */
 object Routes {
-    const val SPLASH = "splash"
     const val LOGIN = "login"
     const val REGISTER = "register"
     const val DASHBOARD = "dashboard"

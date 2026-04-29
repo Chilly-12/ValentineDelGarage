@@ -20,8 +20,13 @@ interface EmployeeDao {
     @Query("SELECT * FROM employees WHERE id = :id")
     suspend fun findById(id: Long): EmployeeEntity?
 
-    @Query("SELECT * FROM employees WHERE LOWER(username) = LOWER(:username) LIMIT 1")
+    // Case‑sensitive exact match for username
+    @Query("SELECT * FROM employees WHERE username = :username LIMIT 1")
     suspend fun findByUsername(username: String): EmployeeEntity?
+
+    // Email uniqueness remains case‑insensitive (ignoring case)
+    @Query("SELECT * FROM employees WHERE LOWER(email) = LOWER(:email) AND email != '' LIMIT 1")
+    suspend fun findByEmail(email: String): EmployeeEntity?
 
     @Query("SELECT COUNT(*) FROM employees")
     suspend fun count(): Int

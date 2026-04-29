@@ -13,7 +13,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 
 class DashboardViewModel(
@@ -22,10 +24,15 @@ class DashboardViewModel(
 
     private val employeeIdFlow = MutableStateFlow<Long?>(null)
 
+    // Loading state that becomes false once the first real emission arrives
+    private val _isLoading = MutableStateFlow(true)
+    val isLoading: StateFlow<Boolean> = _isLoading.asStateFlow()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val stats: StateFlow<DashboardStats> = employeeIdFlow
         .flatMapLatest { id ->
             getDashboardStatsUseCase.observe(id ?: 0L)
+                .onEach { _isLoading.value = false }
         }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), DashboardStats.Empty)
 

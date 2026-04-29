@@ -67,7 +67,7 @@ class DatabaseSeeder(private val database: AppDatabase) {
             )
         )
         val t1Task1 = taskDao.insert(RepairTaskEntity(truckId = t1, title = "Replace front brake pads",
-            description = "Both sides — pads worn below 3 mm.", isDone = true,
+            description = "Both sides pads worn below 3 mm.", isDone = true,
             completedByEmployeeId = peterId, completedAt = nowMillis - day))
         taskDao.insert(RepairTaskEntity(truckId = t1, title = "Engine oil and filter change",
             description = "Use 15W-40 fully synthetic.", isDone = false,
@@ -93,16 +93,16 @@ class DatabaseSeeder(private val database: AppDatabase) {
             )
         )
         val t2Task1 = taskDao.insert(RepairTaskEntity(truckId = t2, title = "Diagnose diesel leak",
-            description = "Strong smell — find source before anything else.", isDone = false,
+            description = "Strong smell, find source before anything else.", isDone = false,
             completedByEmployeeId = null, completedAt = null))
         taskDao.insert(RepairTaskEntity(truckId = t2, title = "Replace windscreen",
             description = "Quote already approved by customer.", isDone = false,
             completedByEmployeeId = null, completedAt = null))
-        taskDao.insert(RepairTaskEntity(truckId = t2, title = "Bodywork — left rear panel",
-            description = "Cosmetic — schedule after mechanical work.", isDone = false,
+        taskDao.insert(RepairTaskEntity(truckId = t2, title = "Bodywork left rear panel",
+            description = "Cosmetic, schedule after mechanical work.", isDone = false,
             completedByEmployeeId = null, completedAt = null))
         noteDao.insert(TaskNoteEntity(taskId = t2Task1, authorEmployeeId = maryId,
-            message = "Suspect injector seals — ordered new set.", createdAt = nowMillis - 3_600_000))
+            message = "Suspect injector seals, ordered new set.", createdAt = nowMillis - 3_600_000))
 
         // ── Truck 3 — Completed, EXCELLENT
         val t3 = truckDao.insert(

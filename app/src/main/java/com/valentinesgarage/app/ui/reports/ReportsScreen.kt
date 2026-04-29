@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -106,12 +106,23 @@ fun ReportsScreen(
             ) {
                 item { ConditionBreakdownCard(data.conditionBreakdown) }
                 item { SectionHeader("Employee activity") }
-                items(data.employeeActivity, key = { it.employee.id }) { activity ->
+
+                // FIX: Use index as part of key to ensure uniqueness
+                itemsIndexed(
+                    data.employeeActivity,
+                    key = { index, activity -> "${activity.employee.id}_$index" }
+                ) { _, activity ->
                     EmployeeRow(activity)
                 }
+
                 item { Spacer(Modifier.height(8.dp)) }
                 item { SectionHeader("Check-in conditions") }
-                items(data.checkIns, key = { it.truck.id }) { record ->
+
+                // FIX: Use index as part of key to ensure uniqueness
+                itemsIndexed(
+                    data.checkIns,
+                    key = { index, record -> "${record.truck.id}_$index" }
+                ) { _, record ->
                     CheckInRow(record)
                 }
             }

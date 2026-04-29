@@ -10,7 +10,6 @@ import kotlinx.coroutines.launch
 /**
  * Application root. Holds the manual DI container so all ViewModels can
  * access shared singletons (database, repositories, use cases) and seeds
- * demo data the very first time the app launches.
  */
 class ValentinesGarageApp : Application() {
     lateinit var container: AppContainer

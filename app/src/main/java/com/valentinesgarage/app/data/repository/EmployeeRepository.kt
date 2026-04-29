@@ -8,9 +8,6 @@ import com.valentinesgarage.app.util.PasswordHasher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-/**
- * Bridges the Room employee table to the domain layer.
- */
 class EmployeeRepository(private val dao: EmployeeDao) {
 
     fun observeAll(): Flow<List<Employee>> =
@@ -23,6 +20,7 @@ class EmployeeRepository(private val dao: EmployeeDao) {
 
     suspend fun findById(id: Long): Employee? = dao.findById(id)?.toDomain()
 
+    // Exact match, no case‑folding
     suspend fun findByUsername(username: String): Employee? =
         dao.findByUsername(username.trim())?.toDomain()
 
@@ -38,14 +36,16 @@ class EmployeeRepository(private val dao: EmployeeDao) {
         phone: String,
         nowMillis: Long,
     ): Employee {
+        // Registration still lowercases the username to ensure uniqueness
+        val lowerUsername = username.trim().lowercase()
         val salt = PasswordHasher.newSalt()
         val entity = EmployeeEntity(
-            username = username.trim().lowercase(),
+            username = lowerUsername,
             name = name.trim(),
             role = role.name,
             passwordHash = PasswordHasher.hash(password, salt),
             passwordSalt = salt,
-            email = email.trim(),
+            email = email.trim().lowercase(),
             phone = phone.trim(),
             createdAt = nowMillis,
             isActive = true,
@@ -55,6 +55,7 @@ class EmployeeRepository(private val dao: EmployeeDao) {
     }
 
     suspend fun authenticate(username: String, password: String): Employee? {
+        // case‑sensitive lookup – input must match stored lowercase exactly
         val row = dao.findByUsername(username.trim()) ?: return null
         if (!row.isActive) return null
         if (!PasswordHasher.verify(password, row.passwordSalt, row.passwordHash)) return null
@@ -81,8 +82,20 @@ class EmployeeRepository(private val dao: EmployeeDao) {
         phone: String,
     ): Employee? {
         val row = dao.findById(employeeId) ?: return null
-        val updated = row.copy(name = name.trim(), email = email.trim(), phone = phone.trim())
+        val updated = row.copy(name = name.trim(), email = email.trim().lowercase(), phone = phone.trim())
         dao.update(updated)
         return updated.toDomain()
     }
 }
+
+// Extension kept internal
+private fun EmployeeEntity.toDomain() = Employee(
+    id = id,
+    username = username,
+    name = name,
+    role = EmployeeRole.valueOf(role),
+    email = email,
+    phone = phone,
+    createdAt = createdAt,
+    isActive = isActive,
+)

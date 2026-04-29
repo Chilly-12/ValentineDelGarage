@@ -23,6 +23,7 @@ data class LoginUiState(
     val message: String? = null,
 )
 
+
 class LoginViewModel(
     private val loginUseCase: LoginUseCase,
 ) : ViewModel() {
