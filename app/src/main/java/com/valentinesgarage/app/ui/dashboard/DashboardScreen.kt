@@ -50,7 +50,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -58,6 +57,7 @@ import com.valentinesgarage.app.R
 import com.valentinesgarage.app.domain.model.EmployeeRole
 import com.valentinesgarage.app.domain.model.Truck
 import com.valentinesgarage.app.domain.model.VehicleCondition
+import com.valentinesgarage.app.ui.components.AurevargFooter
 import com.valentinesgarage.app.ui.components.GarageBottomBar
 import com.valentinesgarage.app.ui.components.StatCard
 import com.valentinesgarage.app.ui.session.SessionViewModel
@@ -278,13 +278,9 @@ fun DashboardScreen(
                 }
             }
 
-            // "by Aurevarg" at the very bottom
+            // Aurevarg footer - clickable and centralized
             item {
-                Text(
-                    text = "by Aurevarg",
-                    style = MaterialTheme.typography.labelMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f),
-                    textAlign = TextAlign.Center,
+                AurevargFooter(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 24.dp)

@@ -159,6 +159,7 @@ fun SettingsScreen(
             }
 
             Spacer(Modifier.weight(1f))
+            // Aurevarg footer - clickable and centralized
             AurevargFooter()
             Spacer(Modifier.height(8.dp))
         }
@@ -318,7 +319,7 @@ fun SettingsScreen(
     }
 }
 
-// ── Helper composables (unchanged) ────────────────────────
+// ── Helper composables ────────────────────────
 @Composable
 private fun ProfileSummary(name: String, roleLabel: String, username: String) {
     Card(
