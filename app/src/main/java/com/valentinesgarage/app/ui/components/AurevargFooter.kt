@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 
 object AurevargConfig {
     const val BRAND_NAME = "Aurevarg"
-    const val WEBSITE_URL = "https://aurevarg.vercel.app"
+    const val WEBSITE_URL = "https://incenar.com"
     const val FULL_TEXT = "by $BRAND_NAME"
 }
 
