@@ -6,6 +6,10 @@ gradle-app.setting
 !gradle-wrapper.jar
 !gradle-wrapper.properties
 
+# ─── Kotlin sessions (don't commit IDE compiler sessions) ─────────────────────
+.kotlin/
+.sessions/
+
 # ─── Android Studio / IntelliJ ────────────────────────────────────────────────
 .idea/
 *.iml
@@ -42,6 +46,7 @@ lint/
 lint-results*
 test-results/
 coverage/
+ARCHITECTURE.md
 
-# ─── Others ──────────────────────────────────────────────────────
+# ─── Others ───────────────────────────────────────────────────────────────────
 README.md
