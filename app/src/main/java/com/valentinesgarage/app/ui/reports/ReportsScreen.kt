@@ -104,24 +104,30 @@ fun ReportsScreen(
                 ),
                 verticalArrangement = Arrangement.spacedBy(14.dp),
             ) {
-                item { ConditionBreakdownCard(data.conditionBreakdown) }
-                item { SectionHeader("Employee activity") }
+                item(key = "condition_breakdown") {
+                    ConditionBreakdownCard(data.conditionBreakdown)
+                }
+                item(key = "employee_header") {
+                    SectionHeader("Employee activity")
+                }
 
-                // FIX: Use index as part of key to ensure uniqueness
                 itemsIndexed(
                     data.employeeActivity,
-                    key = { index, activity -> "${activity.employee.id}_$index" }
+                    key = { index, activity -> "emp_${activity.employee.id}_$index" }
                 ) { _, activity ->
                     EmployeeRow(activity)
                 }
 
-                item { Spacer(Modifier.height(8.dp)) }
-                item { SectionHeader("Check-in conditions") }
+                item(key = "spacer_before_checkins") {
+                    Spacer(Modifier.height(8.dp))
+                }
+                item(key = "checkin_header") {
+                    SectionHeader("Check-in conditions")
+                }
 
-                // FIX: Use index as part of key to ensure uniqueness
                 itemsIndexed(
                     data.checkIns,
-                    key = { index, record -> "${record.truck.id}_$index" }
+                    key = { index, record -> "truck_${record.truck.id}_$index" }
                 ) { _, record ->
                     CheckInRow(record)
                 }
@@ -158,17 +164,30 @@ private fun ConditionBreakdownCard(breakdown: Map<VehicleCondition, Int>) {
             VehicleCondition.entries.forEach { condition ->
                 val count = breakdown[condition] ?: 0
                 Column(modifier = Modifier.padding(vertical = 4.dp)) {
-                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Box(
                                 modifier = Modifier
                                     .size(10.dp)
-                                    .background(conditionColor(condition), RoundedCornerShape(50)),
+                                    .background(
+                                        conditionColor(condition),
+                                        RoundedCornerShape(50)
+                                    ),
                             )
                             Spacer(Modifier.size(8.dp))
-                            Text(condition.displayName, style = MaterialTheme.typography.bodyMedium)
+                            Text(
+                                condition.displayName,
+                                style = MaterialTheme.typography.bodyMedium
+                            )
                         }
-                        Text("$count", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
+                        Text(
+                            "$count",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold
+                        )
                     }
                     Spacer(Modifier.height(4.dp))
                     LinearProgressIndicator(
@@ -209,16 +228,23 @@ private fun EmployeeRow(activity: GetReportsUseCase.EmployeeActivity) {
                 }
                 Spacer(Modifier.size(12.dp))
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(activity.employee.name, style = MaterialTheme.typography.titleMedium)
                     Text(
-                        activity.employee.role.name.lowercase().replaceFirstChar { it.titlecase() },
+                        activity.employee.name,
+                        style = MaterialTheme.typography.titleMedium
+                    )
+                    Text(
+                        activity.employee.role.name.lowercase()
+                            .replaceFirstChar { it.titlecase() },
                         style = MaterialTheme.typography.labelMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }
             Spacer(Modifier.height(12.dp))
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 StatBlock("Tasks done", activity.completedTaskCount.toString())
                 StatBlock("Notes", activity.notesCount.toString())
                 StatBlock("Check-ins", activity.checkedInTrucksCount.toString())
@@ -236,8 +262,15 @@ private fun CheckInRow(record: GetReportsUseCase.CheckInRecord) {
         modifier = Modifier.fillMaxWidth(),
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(record.truck.plateNumber, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Black)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    record.truck.plateNumber,
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Black,
+                )
                 Text(
                     record.truck.condition.displayName,
                     color = conditionColor(record.truck.condition),
@@ -284,8 +317,16 @@ private fun CheckInRow(record: GetReportsUseCase.CheckInRecord) {
 @Composable
 private fun StatBlock(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(value, style = MaterialTheme.typography.headlineMedium, color = MaterialTheme.colorScheme.primary)
-        Text(label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text(
+            value,
+            style = MaterialTheme.typography.headlineMedium,
+            color = MaterialTheme.colorScheme.primary,
+        )
+        Text(
+            label,
+            style = MaterialTheme.typography.labelMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
     }
 }
 
